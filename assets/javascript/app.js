@@ -1,5 +1,4 @@
 
-{/*  */ }
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyCWqV-I5eeY2PaQmPZtT8QT-6-EtP3lj2o",
@@ -11,12 +10,14 @@ var config = {
 };
 firebase.initializeApp(config);
 
-let name = "";
-let destination = "";
-let firstTrain = "03:00AM";
-let frequency = 0;
+var dataRef = firebase.database();
 
-$(".btn").on("click", function () {
+var name = "";
+var destination = "";
+var firstTrain = "03:00AM";
+var frequency = 0;
+
+$(".btn").on("click", function (event) {
 
     event.preventDefault();
     console.log("yay");
@@ -25,15 +26,37 @@ $(".btn").on("click", function () {
     firstTrain = $("#first-input").val().trim();
     frequency = $("#frequency-input").val().trim();
 
-    database.ref(status).push({
+
+    dataRef.ref("users").push({
         name: name,
         destination: destination,
         firstTrain: firstTrain,
         frequency: frequency,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 });
 
+dataRef.ref("users").on("child_added", function (childSnapshot) {
+//  console.log(childSnapshot.val().name);
+//  console.log(childSnapshot.val().destination);
+//  console.log(childSnapshot.val().firstTrain);
+//  console.log(childSnapshot.val().frequency);
+//  console.log(childSnapshot.val().ServerValue);
 
-// database.ref("users").on("child_added", function (snapshot) {
+ $("#name-input").text(childSnapshot.val().name);
+ $("#destination-input").text(childSnapshot.val().destination);
+ $("#first-input").text(childSnapshot.val().firstTrain);
+ $("#frequency-input").text(childSnapshot.val().frequency);
 
-// })
+ var tableRow = $("<tr>");
+ var nextArrival = 0;
+ var minutesAway = momemt().endOf('minute').fromNow();
+
+
+ tableRow.append("<td>"+ name + "</td>")
+ tableRow.append("<td>"+ destination + "</td>")
+ tableRow.append("<td>"+ frequency + "</td>");
+ tableRow.append("<td>"+ "next arrival" +"</td>");
+ tableRow.append("<td>"+ "Minutes away"+ "</td>");
+ $("tbody").append(tableRow);
+});
