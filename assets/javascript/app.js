@@ -37,11 +37,6 @@ $(".btn").on("click", function (event) {
 });
 
 dataRef.ref("users").on("child_added", function (childSnapshot) {
-//  console.log(childSnapshot.val().name);
-//  console.log(childSnapshot.val().destination);
-//  console.log(childSnapshot.val().firstTrain);
-//  console.log(childSnapshot.val().frequency);
-//  console.log(childSnapshot.val().ServerValue);
 
  $("#name-input").text(childSnapshot.val().name);
  $("#destination-input").text(childSnapshot.val().destination);
@@ -50,8 +45,10 @@ dataRef.ref("users").on("child_added", function (childSnapshot) {
 
  var tableRow = $("<tr>");
  var nextArrival = 0;
- var minutesAway = momemt().endOf('minute').fromNow();
-
+ var minutesAway = 10;
+// 
+//next arrival = now + frequency should be displayed in hh:mm format
+//minutes away = (now +frequency)
 
  tableRow.append("<td>"+ name + "</td>")
  tableRow.append("<td>"+ destination + "</td>")
