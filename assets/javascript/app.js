@@ -44,12 +44,17 @@ dataRef.ref("users").on("child_added", function (childSnapshot) {
  $("#frequency-input").text(childSnapshot.val().frequency);
 
  var tableRow = $("<tr>");
+<<<<<<< HEAD
  var firstTimeConverted = moment(firstTrain, 'hh:mm');
  var currentTime = moment();
  var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
  var tRemainder = diffTime % frequency;
  var nextArrival = moment().add(minutesAway, "minutes");
  var minutesAway = frequency - tRemainder;
+=======
+ var nextArrival = 0;
+ var minutesAway = 10;
+>>>>>>> 9414770049d573d26534a0220cea995c073514f5
 // 
 //next arrival = now + frequency should be displayed in hh:mm format
 //minutes away = (now +frequency)
