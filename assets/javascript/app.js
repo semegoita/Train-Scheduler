@@ -14,8 +14,8 @@ var dataRef = firebase.database();
 
 var name = "";
 var destination = "";
-var firstTrain = "03:00AM";
-var frequency = 0;
+var firstTrain = '';
+var frequency = '';
 
 $(".btn").on("click", function (event) {
 
@@ -44,8 +44,12 @@ dataRef.ref("users").on("child_added", function (childSnapshot) {
  $("#frequency-input").text(childSnapshot.val().frequency);
 
  var tableRow = $("<tr>");
- var nextArrival = 0;
- var minutesAway = 10;
+ var firstTimeConverted = moment(firstTrain, 'hh:mm');
+ var currentTime = moment();
+ var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+ var tRemainder = diffTime % frequency;
+ var nextArrival = moment().add(minutesAway, "minutes");
+ var minutesAway = frequency - tRemainder;
 // 
 //next arrival = now + frequency should be displayed in hh:mm format
 //minutes away = (now +frequency)
@@ -53,7 +57,7 @@ dataRef.ref("users").on("child_added", function (childSnapshot) {
  tableRow.append("<td>"+ name + "</td>")
  tableRow.append("<td>"+ destination + "</td>")
  tableRow.append("<td>"+ frequency + "</td>");
- tableRow.append("<td>"+ "next arrival" +"</td>");
- tableRow.append("<td>"+ "Minutes away"+ "</td>");
+ tableRow.append("<td>"+ nextArrival +"</td>");
+ tableRow.append("<td>"+ minutesAway+ "</td>");
  $("tbody").append(tableRow);
 });
